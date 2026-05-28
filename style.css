@@ -54,6 +54,7 @@ body {
 
 /* Efeito Cromado/Brilhante para as Figurinhas Especiais e Escudos */
 .sticker-special {
-    border: 2px solid #ffd700 !important;
-    box-shadow: 0 0 15px rgba(255, 215, 0, 0.25) !important;
+    /* OCULTADO TEMPORARIAMENTE: Desativado até o envio da lista oficial de especiais */
+    /* border: 2px solid #ffd700 !important; */
+    /* box-shadow: 0 0 15px rgba(255, 215, 0, 0.25) !important; */
 }

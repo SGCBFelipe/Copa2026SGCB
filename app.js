@@ -269,19 +269,19 @@ function renderAlbum() {
                 `;
             } else {
                 repeatedHTML = `
-                    <div class="text-[8px] font-bold text-[#ff1e56] py-0.5 mt-1">✓ TENHO</div>
+                    <div class="text-[8px] font-bold text-[#ff1e56] py-0.5 mt-1">✓ OBTIDO</div>
                 `;
             }
         } else {
             repeatedHTML = `
-                <div class="text-[8px] font-bold text-slate-600 py-0.5 mt-1">NÃO TENHO</div>
+                <div class="text-[8px] font-bold text-slate-600 py-0.5 mt-1">FALTANDO</div>
             `;
         }
 
         card.innerHTML = `
             <div class="flex justify-between items-center w-full text-[9px] font-mono opacity-80">
                 <span class="bg-black/40 px-1.5 py-0.5 rounded font-bold">${sticker.category}</span>
-                <span class="${sticker.special ? 'text-amber-400 font-bold' : ''}">${sticker.code}</span>
+                <span class="${sticker.special ? 'text-amber-400 font-bold' : ''}">${sticker.special && isOwned ? '' : sticker.code}</span>
             </div>
             <div class="sticker-avatar my-1 flex justify-center text-slate-600">
                 <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
@@ -289,7 +289,7 @@ function renderAlbum() {
                 </svg>
             </div>
             <p class="text-[10px] font-copa tracking-tight leading-none uppercase truncate w-full ${isOwned ? 'text-white' : 'text-slate-500'}">
-                ${isOwned ? sticker.name : 'FALTA'}
+                ${isOwned ? '' : 'FALTANDO'}
             </p>
             ${repeatedHTML}
         `;
