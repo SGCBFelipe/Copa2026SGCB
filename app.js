@@ -1,4 +1,4 @@
-const TOTAL_STICKERS = 994; 
+const TOTAL_STICKERS = 994; // 20 FWC + (48 Seleções * 20) + 14 Coca-Cola
 const ITEMS_PER_PAGE = 48;
 
 let stickersList = [];
@@ -8,6 +8,7 @@ let currentFilter = 'all';
 let currentPage = 1;
 let isAdmin = false;
 
+// Mapeamento sequencial exato com a injeção oficial dos Grupos (A até L) extraídos do PDF
 const SECTIONS_DATA = [
     { id: "FWC", name: "História da Copa", count: 20, prefix: "FWC", group: "especial" },
     { id: "MEX", name: "México", count: 20, prefix: "MEX", group: "A" },
@@ -189,12 +190,14 @@ function changeCategory() {
     renderAlbum();
 }
 
-function getFilteredList() {
+function renderAlbum() {
+    const grid = document.getElementById('album-grid');
     const groupFilter = document.getElementById('group-select').value;
     const categoryFilter = document.getElementById('category-select').value;
     const searchQuery = document.getElementById('search-input').value.toLowerCase().trim();
+    grid.innerHTML = '';
 
-    return stickersList.filter(sticker => {
+    const filteredList = stickersList.filter(sticker => {
         const isOwned = stickersState[sticker.id];
         const repCount = stickersRepeatedState[sticker.id] || 0;
 
@@ -213,13 +216,6 @@ function getFilteredList() {
 
         return true;
     });
-}
-
-function renderAlbum() {
-    const grid = document.getElementById('album-grid');
-    grid.innerHTML = '';
-
-    const filteredList = getFilteredList();
 
     const totalPages = Math.ceil(filteredList.length / ITEMS_PER_PAGE) || 1;
     if (currentPage > totalPages) currentPage = totalPages;
@@ -331,9 +327,7 @@ function filterStickers(filter, event) {
         btn.classList.add('text-slate-400');
     });
 
-    const clickedElement = event ? event.currentTarget : window.event?.target;
-    const targetBtn = clickedElement?.closest ? clickedElement.closest('.filter-btn') : clickedElement;
-
+    const targetBtn = event ? event.currentTarget : window.event?.target;
     if (targetBtn) {
         targetBtn.classList.add('active', 'bg-[#ff1e56]', 'text-slate-950');
         targetBtn.classList.remove('text-slate-400');
@@ -343,7 +337,26 @@ function filterStickers(filter, event) {
 }
 
 function navigatePage(direction) {
-    const filteredList = getFilteredList();
+    const groupFilter = document.getElementById('group-select').value;
+    const categoryFilter = document.getElementById('category-select').value;
+    const searchQuery = document.getElementById('search-input').value.toLowerCase().trim();
+
+    const filteredList = stickersList.filter(sticker => {
+        const isOwned = stickersState[sticker.id];
+        const repCount = stickersRepeatedState[sticker.id] || 0;
+        if (groupFilter !== 'all' && sticker.group !== groupFilter) return false;
+        if (categoryFilter !== 'all' && sticker.category !== categoryFilter) return false;
+        if (currentFilter === 'owned' && !isOwned) return false;
+        if (currentFilter === 'missing' && isOwned) return false;
+        if (currentFilter === 'repeated' && (!isOwned || repCount === 0)) return false;
+        if (searchQuery) {
+            const matchesName = sticker.name.toLowerCase().includes(searchQuery);
+            const matchesCode = sticker.code.toLowerCase().includes(searchQuery);
+            if (!matchesName && !matchesCode) return false;
+        }
+        return true;
+    });
+
     const totalPages = Math.ceil(filteredList.length / ITEMS_PER_PAGE) || 1;
 
     if (direction === 'first') currentPage = 1;
