@@ -138,6 +138,7 @@ function initLocalStorageState() {
             stickersRepeatedState[s.id] = 0;
         });
 
+        // Valores de demonstração iniciais
         stickersState[1] = true;
         stickersState[21] = true;
         stickersState[161] = true; stickersRepeatedState[161] = 2;
@@ -255,7 +256,8 @@ function renderAlbum() {
         if (isOwned) {
             if (isAdmin) {
                 repeatedHTML = `
-                    <div onclick="event.stopPropagation();" class="flex items-center justify-between bg-black/50 border border-slate-800 rounded p-0.5 mt-1 text-[10px]">
+                    <div class="text-[8px] font-bold text-[#ff1e56] mt-1">✓ OBTIDO</div>
+                    <div onclick="event.stopPropagation();" class="flex items-center justify-between bg-black/50 border border-slate-800 rounded p-0.5 mt-0.5 text-[10px]">
                         <button onclick="changeRepeated(${sticker.id}, -1)" class="px-1.5 bg-slate-800 hover:bg-slate-700 active:bg-slate-600 text-white font-bold rounded cursor-pointer transition text-[9px]">-</button>
                         <span class="font-bold text-amber-400 font-mono">${repCount} rep</span>
                         <button onclick="changeRepeated(${sticker.id}, 1)" class="px-1.5 bg-slate-800 hover:bg-slate-700 active:bg-slate-600 text-white font-bold rounded cursor-pointer transition text-[9px]">+</button>
@@ -263,7 +265,8 @@ function renderAlbum() {
                 `;
             } else if (repCount > 0) {
                 repeatedHTML = `
-                    <div class="bg-amber-500/10 border border-amber-500/30 text-amber-400 font-extrabold rounded py-0.5 mt-1 text-[9px] font-mono tracking-wide">
+                    <div class="text-[8px] font-bold text-[#ff1e56] mt-1">✓ OBTIDO</div>
+                    <div class="bg-amber-500/10 border border-amber-500/30 text-amber-400 font-extrabold rounded py-0.5 mt-0.5 text-[9px] font-mono tracking-wide">
                         +${repCount} REPETIDA
                     </div>
                 `;
@@ -274,23 +277,20 @@ function renderAlbum() {
             }
         } else {
             repeatedHTML = `
-                <div class="text-[8px] font-bold text-slate-600 py-0.5 mt-1">FALTANDO</div>
+                <div class="text-[8px] font-bold text-slate-600 py-0.5 mt-1">NÃO TENHO</div>
             `;
         }
 
         card.innerHTML = `
             <div class="flex justify-between items-center w-full text-[9px] font-mono opacity-80">
                 <span class="bg-black/40 px-1.5 py-0.5 rounded font-bold">${sticker.category}</span>
-                <span class="${sticker.special ? 'text-amber-400 font-bold' : ''}">${sticker.special && isOwned ? '' : sticker.code}</span>
+                <span class="${sticker.special ? 'text-amber-400 font-bold' : ''}">${sticker.code}</span>
             </div>
-            <div class="sticker-avatar my-1 flex justify-center text-slate-600">
+            <div class="sticker-avatar my-2 flex justify-center text-slate-600">
                 <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
                 </svg>
             </div>
-            <p class="text-[10px] font-copa tracking-tight leading-none uppercase truncate w-full ${isOwned ? 'text-white' : 'text-slate-500'}">
-                ${isOwned ? '' : 'FALTANDO'}
-            </p>
             ${repeatedHTML}
         `;
         grid.appendChild(card);
