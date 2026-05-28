@@ -138,7 +138,7 @@ function initLocalStorageState() {
             stickersRepeatedState[s.id] = 0;
         });
 
-        // Valores de demonstração iniciais
+        // Mocks iniciais de demonstração
         stickersState[1] = true;
         stickersState[21] = true;
         stickersState[161] = true; stickersRepeatedState[161] = 2;
@@ -178,7 +178,6 @@ function changeGroup() {
 
 function changeCategory() {
     const categoryFilter = document.getElementById('category-select').value;
-
     if (categoryFilter !== 'all') {
         const section = SECTIONS_DATA.find(s => s.id === categoryFilter);
         if (section) {
@@ -204,7 +203,6 @@ function renderAlbum() {
 
         if (groupFilter !== 'all' && sticker.group !== groupFilter) return false;
         if (categoryFilter !== 'all' && sticker.category !== categoryFilter) return false;
-
         if (currentFilter === 'owned' && !isOwned) return false;
         if (currentFilter === 'missing' && isOwned) return false;
         if (currentFilter === 'repeated' && (!isOwned || repCount === 0)) return false;
@@ -214,7 +212,6 @@ function renderAlbum() {
             const matchesCode = sticker.code.toLowerCase().includes(searchQuery);
             if (!matchesName && !matchesCode) return false;
         }
-
         return true;
     });
 
@@ -233,11 +230,7 @@ function renderAlbum() {
     const pageItems = filteredList.slice(startIdx, startIdx + ITEMS_PER_PAGE);
 
     if (pageItems.length === 0) {
-        grid.innerHTML = `
-            <div class="col-span-full text-center py-12 text-slate-500 font-medium text-xs">
-                Nenhuma figurinha encontrada para os filtros ou busca aplicados.
-            </div>
-        `;
+        grid.innerHTML = `<div class="col-span-full text-center py-12 text-slate-500 font-medium text-xs">Nenhuma figurinha encontrada para os filtros ou busca aplicados.</div>`;
         return;
     }
 
@@ -271,14 +264,10 @@ function renderAlbum() {
                     </div>
                 `;
             } else {
-                repeatedHTML = `
-                    <div class="text-[8px] font-bold text-[#ff1e56] py-0.5 mt-1">✓ OBTIDO</div>
-                `;
+                repeatedHTML = `<div class="text-[8px] font-bold text-[#ff1e56] py-0.5 mt-1">✓ OBTIDO</div>`;
             }
         } else {
-            repeatedHTML = `
-                <div class="text-[8px] font-bold text-slate-600 py-0.5 mt-1">NÃO TENHO</div>
-            `;
+            repeatedHTML = `<div class="text-[8px] font-bold text-slate-600 py-0.5 mt-1">NÃO TENHO</div>`;
         }
 
         card.innerHTML = `
@@ -310,10 +299,8 @@ function toggleSticker(id) {
 function changeRepeated(id, amount) {
     if (!isAdmin) return;
     if (stickersRepeatedState[id] === undefined) stickersRepeatedState[id] = 0;
-
     stickersRepeatedState[id] += amount;
     if (stickersRepeatedState[id] < 0) stickersRepeatedState[id] = 0;
-
     saveState();
     renderAlbum();
 }
@@ -332,7 +319,6 @@ function filterStickers(filter, event) {
         targetBtn.classList.add('active', 'bg-[#ff1e56]', 'text-slate-950');
         targetBtn.classList.remove('text-slate-400');
     }
-
     renderAlbum();
 }
 
@@ -394,10 +380,7 @@ function closeModal(id) {
 
 function handleLogin(event) {
     event.preventDefault();
-    const usernameInput = document.getElementById('username').value;
-    const passwordInput = document.getElementById('password').value;
-
-    if (usernameInput === 'admin' && passwordInput === 'copa2026') {
+    if (document.getElementById('username').value === 'admin' && document.getElementById('password').value === 'copa2026') {
         sessionStorage.setItem('copa2026_logged_in', 'true');
         location.reload();
     } else {

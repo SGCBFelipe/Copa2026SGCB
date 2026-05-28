@@ -14,11 +14,16 @@
     <link rel="stylesheet" href="style.css">
 </head>
 
-<body class="bg-pattern text-slate-100 min-h-screen flex flex-col justify-between relative">
+<body class="text-slate-100 min-h-screen flex flex-col justify-between relative bg-[#05050b]">
 
-    <svg class="fixed inset-0 -z-10 w-full h-full pointer-events-none opacity-[0.015] invert select-none" xmlns="http://www.w3.org/2000/svg">
+    <div class="fixed inset-0 -z-20 overflow-hidden pointer-events-none">
+        <div class="absolute top-[-15vw] left-[-15vw] w-[50vw] h-[50vw] rounded-full filter blur-[130px] ambient-glow-1"></div>
+        <div class="absolute bottom-[-20vw] right-[-20vw] w-[55vw] h-[55vw] rounded-full filter blur-[130px] ambient-glow-2"></div>
+    </div>
+
+    <svg class="fixed inset-0 -z-10 w-full h-full pointer-events-none opacity-[0.02] invert select-none" xmlns="http://www.w3.org/2000/svg">
         <defs>
-            <pattern id="logo2026-pattern" x="0" y="0" width="100" height="154" patternUnits="userSpaceOnUse" viewBox="-100 -100 1160 1682">
+            <pattern id="logo2026-pattern" x="0" y="0" width="100" height="155" patternUnits="userSpaceOnUse" viewBox="-20 -20 1000 1550">
                 <g transform="translate(0.000000,1482.000000) scale(0.100000,-0.100000)" fill="#000000" stroke="none">
                     <path d="M2165 14809 c-155 -15 -354 -58 -523 -115 -762 -253 -1338 -861
                     -1556 -1639 -47 -169 -86 -428 -86 -576 l0 -59 1128 -1 c688 -1 1092 -5 1037
@@ -58,9 +63,7 @@
             </div>
 
             <div class="w-full lg:w-auto flex flex-col gap-3 items-end justify-end">
-                
                 <div class="flex items-center justify-between lg:justify-end gap-2 md:gap-3 w-full">
-                    
                     <button onclick="openModal('regras-modal')"
                         class="bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-[#ff1e56] text-slate-300 hover:text-white font-bold px-3 md:px-4 rounded-xl transition text-xs cursor-pointer whitespace-nowrap h-9 flex items-center justify-center">
                         📜 Regras
@@ -74,8 +77,7 @@
                         <div id="admin-badge"
                             class="hidden bg-red-950/40 border border-red-500 text-red-400 px-3 md:px-4 rounded-xl text-xs font-bold flex items-center justify-center gap-2 whitespace-nowrap h-9">
                             <span class="w-2 h-2 rounded-full bg-red-400"></span> MODO EDIÇÃO
-                            <button onclick="logout()"
-                                class="text-white hover:text-red-400 underline ml-1 cursor-pointer">Sair</button>
+                            <button onclick="logout()" class="text-white hover:text-red-400 underline ml-1 cursor-pointer">Sair</button>
                         </div>
                         <button id="login-trigger-btn" onclick="openModal('login-modal')"
                             class="bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-[#ff1e56] text-white font-bold px-3 md:px-4 rounded-xl transition text-xs cursor-pointer whitespace-nowrap h-9 flex items-center justify-center">
@@ -93,11 +95,8 @@
                             <span id="stats-repeated" class="text-amber-400">0</span> Repetidas
                         </span>
                     </div>
-                    <div
-                        class="w-full bg-slate-950 h-6 rounded-lg overflow-hidden p-[2px] relative flex items-center justify-center border border-slate-800">
-                        <div id="progress-bar"
-                            class="h-full rounded-md bg-gradient-to-r from-[#ff1e56] to-[#80001c] transition-all duration-500 absolute left-[2px]"
-                            style="width: 0%"></div>
+                    <div class="w-full bg-slate-950 h-6 rounded-lg overflow-hidden p-[2px] relative flex items-center justify-center border border-slate-800">
+                        <div id="progress-bar" class="h-full rounded-md bg-gradient-to-r from-[#ff1e56] to-[#80001c] transition-all duration-500 absolute left-[2px]" style="width: 0%"></div>
                         <span id="progress-percentage" class="text-[11px] font-copa text-white relative z-10">0%</span>
                     </div>
                 </div>
@@ -107,17 +106,14 @@
     </header>
 
     <section class="max-w-7xl mx-auto w-full px-4 mt-6">
-        <div
-            class="bg-slate-900/40 border border-slate-900 rounded-xl p-4 flex flex-col xl:flex-row gap-5 items-start xl:items-center justify-between">
-            <h2
-                class="text-md font-copa text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 uppercase tracking-tight whitespace-nowrap">
+        <div class="bg-slate-900/40 border border-slate-900 rounded-xl p-4 flex flex-col xl:flex-row gap-5 items-start xl:items-center justify-between">
+            <h2 class="text-md font-copa text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 uppercase tracking-tight whitespace-nowrap">
                 Visão geral Álbum
             </h2>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 w-full xl:flex-1 max-w-5xl items-center">
                 <div class="relative w-full">
-                    <input type="text" id="search-input" oninput="handleSearch()"
-                        placeholder="🔍 Buscar por código ou seleção..."
+                    <input type="text" id="search-input" oninput="handleSearch()" placeholder="🔍 Buscar por código ou seleção..."
                         class="w-full bg-slate-950 border border-slate-800 rounded-lg text-xs px-3 py-2 text-slate-200 placeholder-slate-500 focus:outline-none focus:border-[#ff1e56] transition h-9">
                 </div>
 
@@ -196,46 +192,31 @@
                     <option value="CC">Coca-Cola (CC1 - CC14)</option>
                 </select>
 
-                <div
-                    class="bg-slate-950 p-1 rounded-lg border border-slate-800 flex gap-1 w-full justify-center h-9 items-center">
-                    <button onclick="filterStickers('all', event)"
-                        class="filter-btn active bg-[#ff1e56] text-slate-950 font-bold py-1 rounded-md text-[11px] uppercase cursor-pointer flex-1 h-full transition-colors">Todas</button>
-                    <button onclick="filterStickers('missing', event)"
-                        class="filter-btn text-slate-400 font-bold py-1 rounded-md text-[11px] uppercase cursor-pointer flex-1 h-full transition-colors">Faltam</button>
-                    <button onclick="filterStickers('owned', event)"
-                        class="filter-btn text-slate-400 font-bold py-1 rounded-md text-[11px] uppercase cursor-pointer flex-1 h-full transition-colors">Obtida</button>
-                    <button onclick="filterStickers('repeated', event)"
-                        class="filter-btn text-slate-400 font-bold py-1 rounded-md text-[11px] uppercase cursor-pointer flex-1 h-full text-amber-500/90 transition-colors">Repetida</button>
+                <div class="bg-slate-950 p-1 rounded-lg border border-slate-800 flex gap-1 w-full justify-center h-9 items-center">
+                    <button onclick="filterStickers('all', event)" class="filter-btn active bg-[#ff1e56] text-slate-950 font-bold py-1 rounded-md text-[11px] uppercase cursor-pointer flex-1 h-full transition-colors">Todas</button>
+                    <button onclick="filterStickers('missing', event)" class="filter-btn text-slate-400 font-bold py-1 rounded-md text-[11px] uppercase cursor-pointer flex-1 h-full transition-colors">Faltam</button>
+                    <button onclick="filterStickers('owned', event)" class="filter-btn text-slate-400 font-bold py-1 rounded-md text-[11px] uppercase cursor-pointer flex-1 h-full transition-colors">Obtida</button>
+                    <button onclick="filterStickers('repeated', event)" class="filter-btn text-slate-400 font-bold py-1 rounded-md text-[11px] uppercase cursor-pointer flex-1 h-full text-amber-500/90 transition-colors">Repetida</button>
                 </div>
             </div>
         </div>
     </section>
 
     <main class="max-w-7xl mx-auto w-full px-4 my-6 flex-grow">
-        <div id="admin-hint"
-            class="hidden bg-red-950/20 border border-red-500 text-red-300 px-4 py-3 rounded-xl text-xs font-semibold mb-4 text-center">
-            💡 <strong>Modo Administrator Ativado:</strong> Clique no card para marcar/desmarcar posse. Use os botões
-            internos de <span class="text-amber-400 font-bold">[-] [+]</span> para gerenciar as figurinhas repetidas de
-            troca.
+        <div id="admin-hint" class="hidden bg-red-950/20 border border-red-500 text-red-300 px-4 py-3 rounded-xl text-xs font-semibold mb-4 text-center">
+            💡 <strong>Modo Administrator Ativado:</strong> Clique no card para marcar/desmarcar posse. Use os botões internos de <span class="text-amber-400 font-bold">[-] [+]</span> para gerenciar as figurinhas repetidas de troca.
         </div>
 
-        <div id="album-grid"
-            class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-12 gap-2">
-        </div>
+        <div id="album-grid" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-12 gap-2"></div>
 
         <div class="flex justify-center items-center gap-2 mt-8">
-            <button id="btn-first" onclick="navigatePage('first')"
-                class="p-2 rounded bg-slate-900 border border-slate-800 hover:border-[#ff1e56] text-xs font-bold disabled:opacity-30 cursor-pointer">&lt;&lt;</button>
-            <button id="btn-prev" onclick="navigatePage('prev')"
-                class="p-2 rounded bg-slate-900 border border-slate-800 hover:border-[#ff1e56] text-xs font-bold disabled:opacity-30 cursor-pointer">&lt;</button>
+            <button id="btn-first" onclick="navigatePage('first')" class="p-2 rounded bg-slate-900 border border-slate-800 hover:border-[#ff1e56] text-xs font-bold disabled:opacity-30 cursor-pointer">&lt;&lt;</button>
+            <button id="btn-prev" onclick="navigatePage('prev')" class="p-2 rounded bg-slate-900 border border-slate-800 hover:border-[#ff1e56] text-xs font-bold disabled:opacity-30 cursor-pointer">&lt;</button>
             <span class="text-xs font-mono text-slate-400 px-4 bg-slate-950 py-2 rounded border border-slate-900">
-                Página <span id="current-page-num" class="text-[#ff1e56] font-bold">1</span> de <span
-                    id="total-pages-num">1</span>
+                Página <span id="current-page-num" class="text-[#ff1e56] font-bold">1</span> de <span id="total-pages-num">1</span>
             </span>
-            <button id="btn-next" onclick="navigatePage('next')"
-                class="p-2 rounded bg-slate-900 border border-slate-800 hover:border-[#ff1e56] text-xs font-bold disabled:opacity-30 cursor-pointer">&gt;</button>
-            <button id="btn-last" onclick="navigatePage('last')"
-                class="p-2 rounded bg-slate-900 border border-slate-800 hover:border-[#ff1e56] text-xs font-bold disabled:opacity-30 cursor-pointer">&gt;&gt;</button>
+            <button id="btn-next" onclick="navigatePage('next')" class="p-2 rounded bg-slate-900 border border-slate-800 hover:border-[#ff1e56] text-xs font-bold disabled:opacity-30 cursor-pointer">&gt;</button>
+            <button id="btn-last" onclick="navigatePage('last')" class="p-2 rounded bg-slate-900 border border-slate-800 hover:border-[#ff1e56] text-xs font-bold disabled:opacity-30 cursor-pointer">&gt;&gt;</button>
         </div>
     </main>
 
@@ -243,15 +224,11 @@
         <p>© 2026 - Álbum Digital Interativo Copa 2026 • SuperGeeks Campo Belo. Todos os direitos reservados.</p>
     </footer>
 
-    <div id="regras-modal"
-        class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300 p-4">
-        <div
-            class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl transform scale-95 transition-transform duration-300">
-            <div
-                class="bg-gradient-to-r from-[#ff1e56] to-[#80001c] p-4 flex justify-between items-center text-white">
+    <div id="regras-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300 p-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl transform scale-95 transition-transform duration-300">
+            <div class="bg-gradient-to-r from-[#ff1e56] to-[#80001c] p-4 flex justify-between items-center text-white">
                 <h3 class="font-copa text-sm uppercase tracking-tight">📜 Regras da Campanha</h3>
-                <button onclick="closeModal('regras-modal')"
-                    class="font-bold text-xl hover:text-white cursor-pointer">&times;</button>
+                <button onclick="closeModal('regras-modal')" class="font-bold text-xl hover:text-white cursor-pointer">&times;</button>
             </div>
             <div class="p-6 space-y-4 max-h-[70vh] overflow-y-auto text-slate-300 text-xs md:text-sm leading-relaxed">
                 <p class="font-bold text-white text-sm border-b border-slate-800 pb-2">Participe e complete seu álbum oficial da Copa 2026!</p>
@@ -268,33 +245,25 @@
         </div>
     </div>
 
-    <div id="login-modal"
-        class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300 p-4">
-        <div
-            class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-sm overflow-hidden shadow-2xl transform scale-95 transition-transform duration-300">
-            <div
-                class="bg-gradient-to-r from-[#ff1e56] to-[#80001c] p-4 flex justify-between items-center text-white">
+    <div id="login-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300 p-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-sm overflow-hidden shadow-2xl transform scale-95 transition-transform duration-300">
+            <div class="bg-gradient-to-r from-[#ff1e56] to-[#80001c] p-4 flex justify-between items-center text-white">
                 <h3 class="font-copa text-sm uppercase tracking-tight">Painel do Proprietário</h3>
-                <button onclick="closeModal('login-modal')"
-                    class="font-bold text-xl hover:text-white cursor-pointer">&times;</button>
+                <button onclick="closeModal('login-modal')" class="font-bold text-xl hover:text-white cursor-pointer">&times;</button>
             </div>
             <form onsubmit="handleLogin(event)" class="p-6 space-y-4">
                 <div>
                     <label class="block text-xs font-bold text-slate-400 uppercase mb-1">Usuário</label>
-                    <input type="text" id="username" required placeholder="admin"
-                        class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#ff1e56]">
+                    <input type="text" id="username" required placeholder="admin" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#ff1e56]">
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-slate-400 uppercase mb-1">Senha</label>
-                    <input type="password" id="password" required placeholder="copa2026"
-                        class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#ff1e56]">
+                    <input type="password" id="password" required placeholder="copa2026" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#ff1e56]">
                 </div>
-                <div id="login-error"
-                    class="hidden text-xs text-red-400 font-semibold bg-red-950/50 p-2 rounded-lg border border-red-900">
+                <div id="login-error" class="hidden text-xs text-red-400 font-semibold bg-red-950/50 p-2 rounded-lg border border-red-900">
                     ❌ Usuário ou senha incorretos!
                 </div>
-                <button type="submit"
-                    class="w-full bg-[#ff1e56] text-white font-bold py-3 rounded-xl text-xs uppercase tracking-wider hover:brightness-110 transition cursor-pointer">
+                <button type="submit" class="w-full bg-[#ff1e56] text-white font-bold py-3 rounded-xl text-xs uppercase tracking-wider hover:brightness-110 transition cursor-pointer">
                     Liberar Edição
                 </button>
             </form>

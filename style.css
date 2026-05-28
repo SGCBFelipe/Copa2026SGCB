@@ -1,7 +1,8 @@
-/* Configurações Globais de Tipografia */
+/* Configurações Globais de Tipografia e Base */
 body {
     font-family: 'Plus Jakarta Sans', sans-serif;
     background-color: #05050b;
+    overflow-x: hidden;
 }
 
 .font-copa {
@@ -16,17 +17,78 @@ body {
     background-clip: text;
     -webkit-text-fill-color: transparent;
     -white-text-fill-color: transparent;
-    background-clip: text;
     color: transparent;
     display: inline-block;
 }
 
-/* Fundo Geométrico da Identidade Visual Copa 2026 (Modificado para Vermelho Cyberpunk) */
-.bg-pattern {
-    background-color: #05050b;
-    background-image:
-        radial-gradient(circle at 10% 20%, rgba(255, 30, 86, 0.12) 0%, transparent 50%),
-        radial-gradient(circle at 90% 80%, rgba(128, 0, 28, 0.12) 0%, transparent 50%);
+/* --- SISTEMA DE PULSO DE ENERGIA GLOBAL (AURORAS NEON) --- */
+.ambient-glow-1 {
+    background: radial-gradient(circle, rgba(255, 30, 86, 0.35) 0%, transparent 75%);
+    mix-blend-mode: screen;
+    will-change: transform, opacity;
+    animation: globalEnergyPulse1 14s ease-in-out infinite alternate;
+}
+
+.ambient-glow-2 {
+    background: radial-gradient(circle, rgba(128, 0, 28, 0.45) 0%, transparent 75%);
+    mix-blend-mode: screen;
+    will-change: transform, opacity;
+    animation: globalEnergyPulse2 18s ease-in-out infinite alternate;
+}
+
+@keyframes globalEnergyPulse1 {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 0.5;
+    }
+    50% {
+        transform: translate(6vw, 4vh) scale(1.25);
+        opacity: 0.9;
+    }
+    100% {
+        transform: translate(-3vw, 10vh) scale(0.95);
+        opacity: 0.4;
+    }
+}
+
+@keyframes globalEnergyPulse2 {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 0.6;
+    }
+    50% {
+        transform: translate(-8vw, -6vh) scale(0.85);
+        opacity: 0.3;
+    }
+    100% {
+        transform: translate(4vw, -3vh) scale(1.2);
+        opacity: 0.95;
+    }
+}
+
+/* --- ANIMAÇÃO FLUIDA DO PADRÃO DE LOGOS DA COPA --- */
+.bg-svg-animated {
+    position: fixed;
+    z-index: -10;
+    top: -100px;
+    left: -100px;
+    width: calc(100% + 200px);
+    height: calc(100% + 200px);
+    display: block;
+    will-change: transform;
+    animation: subtlePatternMotion 45s ease-in-out infinite alternate;
+}
+
+@keyframes subtlePatternMotion {
+    0% {
+        transform: translate(0, 0) scale(1);
+    }
+    50% {
+        transform: translate(40px, 25px) scale(1.02);
+    }
+    100% {
+        transform: translate(-20px, 40px) scale(1);
+    }
 }
 
 /* Estado de Alta Densidade dos Cards de Figurinhas */
@@ -45,16 +107,13 @@ body {
     filter: grayscale(100%);
 }
 
-/* Borda e Brilho Neon em Vermelho */
 .sticker-owned {
     border: 2px solid #ff1e56;
     box-shadow: 0 0 15px rgba(255, 30, 86, 0.25);
     color: #ffffff;
 }
 
-/* Efeito Cromado/Brilhante para as Figurinhas Especiais e Escudos */
 .sticker-special {
-    /* OCULTADO TEMPORARIAMENTE: Desativado até o envio da lista oficial de especiais */
-    /* border: 2px solid #ffd700 !important; */
-    /* box-shadow: 0 0 15px rgba(255, 215, 0, 0.25) !important; */
+    border: 1px solid rgba(245, 158, 11, 0.35) !important;
+    box-shadow: 0 0 10px rgba(245, 158, 11, 0.15);
 }
