@@ -1,4 +1,4 @@
-const TOTAL_STICKERS = 994; // 20 FWC + (48 Seleções * 20) + 14 Coca-Cola
+const TOTAL_STICKERS = 994; 
 const ITEMS_PER_PAGE = 48;
 
 let stickersList = [];
@@ -8,7 +8,6 @@ let currentFilter = 'all';
 let currentPage = 1;
 let isAdmin = false;
 
-// Mapeamento sequencial exato com a injeção oficial dos Grupos (A até L) extraídos do PDF
 const SECTIONS_DATA = [
     { id: "FWC", name: "História da Copa", count: 20, prefix: "FWC", group: "especial" },
     { id: "MEX", name: "México", count: 20, prefix: "MEX", group: "A" },
@@ -82,12 +81,12 @@ function generateStickersDatabase() {
                     code = `FWC${j - 1}`;
                     name = `História da Copa #${j - 1}`;
                 }
-                bgGradient = "from-cyan-950 to-slate-950";
+                bgGradient = "from-red-950/40 to-slate-950";
             } else if (sec.id === "CC") {
                 code = `CC${j}`;
                 name = `Coca-Cola Especial #${j}`;
                 isSpecial = true;
-                bgGradient = "from-red-950 to-slate-950";
+                bgGradient = "from-red-900 to-slate-950";
             } else {
                 code = `${sec.prefix}${j}`;
                 if (j === 1) {
@@ -97,9 +96,9 @@ function generateStickersDatabase() {
                     name = `${sec.name} - Jogador nº ${j}`;
                 }
 
-                if (sec.id === "BRA") bgGradient = "from-yellow-950 to-emerald-950";
-                else if (sec.id === "ARG") bgGradient = "from-sky-950 to-slate-950";
-                else if (["MEX", "USA", "CAN"].includes(sec.id)) bgGradient = "from-indigo-950 to-slate-950";
+                if (sec.id === "BRA") bgGradient = "from-yellow-950/40 to-slate-950";
+                else if (sec.id === "ARG") bgGradient = "from-sky-950/40 to-slate-950";
+                else if (["MEX", "USA", "CAN"].includes(sec.id)) bgGradient = "from-red-950/30 to-slate-950";
             }
 
             stickersList.push({
@@ -190,14 +189,12 @@ function changeCategory() {
     renderAlbum();
 }
 
-function renderAlbum() {
-    const grid = document.getElementById('album-grid');
+function getFilteredList() {
     const groupFilter = document.getElementById('group-select').value;
     const categoryFilter = document.getElementById('category-select').value;
     const searchQuery = document.getElementById('search-input').value.toLowerCase().trim();
-    grid.innerHTML = '';
 
-    const filteredList = stickersList.filter(sticker => {
+    return stickersList.filter(sticker => {
         const isOwned = stickersState[sticker.id];
         const repCount = stickersRepeatedState[sticker.id] || 0;
 
@@ -216,6 +213,13 @@ function renderAlbum() {
 
         return true;
     });
+}
+
+function renderAlbum() {
+    const grid = document.getElementById('album-grid');
+    grid.innerHTML = '';
+
+    const filteredList = getFilteredList();
 
     const totalPages = Math.ceil(filteredList.length / ITEMS_PER_PAGE) || 1;
     if (currentPage > totalPages) currentPage = totalPages;
@@ -245,7 +249,7 @@ function renderAlbum() {
         const repCount = stickersRepeatedState[sticker.id] || 0;
         const card = document.createElement('div');
 
-        card.className = `sticker-card relative rounded-lg p-2 flex flex-col justify-between aspect-[3/4] text-center select-none bg-gradient-to-br ${sticker.bg} ${isOwned ? 'sticker-owned' : 'sticker-missing'} ${sticker.special ? 'sticker-special' : ''} ${isAdmin ? 'cursor-pointer scale-100 hover:scale-105 z-10 border-cyan-400' : ''}`;
+        card.className = `sticker-card relative rounded-lg p-2 flex flex-col justify-between aspect-[3/4] text-center select-none bg-gradient-to-br ${sticker.bg} ${isOwned ? 'sticker-owned' : 'sticker-missing'} ${sticker.special ? 'sticker-special' : ''} ${isAdmin ? 'cursor-pointer scale-100 hover:scale-105 z-10 border-red-500' : ''}`;
 
         if (isAdmin) {
             card.onclick = () => toggleSticker(sticker.id);
@@ -269,7 +273,7 @@ function renderAlbum() {
                 `;
             } else {
                 repeatedHTML = `
-                    <div class="text-[8px] font-bold text-[#00ff87] py-0.5 mt-1">✓ TENHO</div>
+                    <div class="text-[8px] font-bold text-[#ff1e56] py-0.5 mt-1">✓ TENHO</div>
                 `;
             }
         } else {
@@ -318,47 +322,28 @@ function changeRepeated(id, amount) {
     renderAlbum();
 }
 
-// CORREÇÃO E FINALIZAÇÃO COMPLETA DA FUNÇÃO QUE CONTROLAVA O FILTRO DE POSSE
 function filterStickers(filter, event) {
     currentFilter = filter;
     currentPage = 1;
 
     document.querySelectorAll('.filter-btn').forEach(btn => {
-        btn.classList.remove('active', 'bg-[#00ff87]', 'text-slate-950');
+        btn.classList.remove('active', 'bg-[#ff1e56]', 'text-slate-950');
         btn.classList.add('text-slate-400');
     });
 
-    const targetBtn = event ? event.currentTarget : window.event?.target;
+    const clickedElement = event ? event.currentTarget : window.event?.target;
+    const targetBtn = clickedElement?.closest ? clickedElement.closest('.filter-btn') : clickedElement;
+
     if (targetBtn) {
-        targetBtn.classList.add('active', 'bg-[#00ff87]', 'text-slate-950');
+        targetBtn.classList.add('active', 'bg-[#ff1e56]', 'text-slate-950');
         targetBtn.classList.remove('text-slate-400');
     }
 
     renderAlbum();
 }
 
-// RESTANTE DAS FUNÇÕES ACESSÓRIAS DO SITE COMPILADAS CORRETAMENTE
 function navigatePage(direction) {
-    const groupFilter = document.getElementById('group-select').value;
-    const categoryFilter = document.getElementById('category-select').value;
-    const searchQuery = document.getElementById('search-input').value.toLowerCase().trim();
-
-    const filteredList = stickersList.filter(sticker => {
-        const isOwned = stickersState[sticker.id];
-        const repCount = stickersRepeatedState[sticker.id] || 0;
-        if (groupFilter !== 'all' && sticker.group !== groupFilter) return false;
-        if (categoryFilter !== 'all' && sticker.category !== categoryFilter) return false;
-        if (currentFilter === 'owned' && !isOwned) return false;
-        if (currentFilter === 'missing' && isOwned) return false;
-        if (currentFilter === 'repeated' && (!isOwned || repCount === 0)) return false;
-        if (searchQuery) {
-            const matchesName = sticker.name.toLowerCase().includes(searchQuery);
-            const matchesCode = sticker.code.toLowerCase().includes(searchQuery);
-            if (!matchesName && !matchesCode) return false;
-        }
-        return true;
-    });
-
+    const filteredList = getFilteredList();
     const totalPages = Math.ceil(filteredList.length / ITEMS_PER_PAGE) || 1;
 
     if (direction === 'first') currentPage = 1;

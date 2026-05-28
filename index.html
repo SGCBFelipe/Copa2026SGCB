@@ -21,11 +21,11 @@
 
             <div class="space-y-2">
                 <div
-                    class="inline-flex items-center gap-2 bg-slate-900 border border-slate-800 px-3 py-1 rounded-full text-xs font-bold tracking-widest text-[#00ff87] uppercase">
-                    <span class="w-2 h-2 rounded-full bg-[#00ff87] animate-ping"></span> Live Tracker
+                    class="inline-flex items-center gap-2 bg-slate-900 border border-slate-800 px-3 py-1 rounded-full text-xs font-bold tracking-widest text-[#ff1e56] uppercase">
+                    <span class="w-2 h-2 rounded-full bg-[#ff1e56] animate-ping"></span> Live Tracker
                 </div>
                 <h1 class="text-4xl md:text-5xl font-copa tracking-tighter uppercase leading-none text-white">
-                    MEU ÁLBUM <br><span class="copa-gradient-green-pink">COPA 2026</span>
+                    MEU ÁLBUM <br><span class="copa-gradient-red">COPA 2026</span>
                 </h1>
                 <p class="text-slate-400 max-w-xl text-xs md:text-sm">
                     Acompanhe em tempo real as figurinhas que eu já tenho e me ajude a completar o álbum oficial dos
@@ -39,7 +39,7 @@
                         <span class="text-xs uppercase font-extrabold tracking-wider text-slate-400">Progresso
                             Geral:</span>
                         <span class="text-xs font-bold text-slate-300">
-                            <span id="stats-owned" class="text-[#00ff87]">0</span> / <span id="stats-total">994</span>
+                            <span id="stats-owned" class="text-[#ff1e56]">0</span> / <span id="stats-total">994</span>
                             <span class="text-slate-600 mx-1">|</span>
                             <span id="stats-repeated" class="text-amber-400">0</span> Repetidas
                         </span>
@@ -47,7 +47,7 @@
                     <div
                         class="w-full bg-slate-950 h-6 rounded-lg overflow-hidden p-[2px] relative flex items-center justify-center border border-slate-800">
                         <div id="progress-bar"
-                            class="h-full rounded-md bg-gradient-to-r from-[#00ff87] to-[#ff007f] transition-all duration-500 absolute left-[2px]"
+                            class="h-full rounded-md bg-gradient-to-r from-[#ff1e56] to-[#80001c] transition-all duration-500 absolute left-[2px]"
                             style="width: 0%"></div>
                         <span id="progress-percentage" class="text-[11px] font-copa text-white relative z-10">0%</span>
                     </div>
@@ -55,13 +55,13 @@
 
                 <div class="flex items-center gap-3 w-full lg:w-auto justify-end">
                     <div id="admin-badge"
-                        class="hidden bg-emerald-950 border border-emerald-500 text-emerald-400 px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-emerald-400"></span> MODO EDIÇÃO
+                        class="hidden bg-red-950/40 border border-red-500 text-red-400 px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-red-400"></span> MODO EDIÇÃO
                         <button onclick="logout()"
                             class="text-white hover:text-red-400 underline ml-1 cursor-pointer">Sair</button>
                     </div>
                     <button id="login-trigger-btn" onclick="openModal('login-modal')"
-                        class="bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-[#00ff87] text-white font-bold px-4 py-2 rounded-xl transition text-xs cursor-pointer">
+                        class="bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-[#ff1e56] text-white font-bold px-4 py-2 rounded-xl transition text-xs cursor-pointer">
                         🔑 Login Master
                     </button>
                 </div>
@@ -82,11 +82,11 @@
                 <div class="relative w-full">
                     <input type="text" id="search-input" oninput="handleSearch()"
                         placeholder="🔍 Buscar por código ou seleção..."
-                        class="w-full bg-slate-950 border border-slate-800 rounded-lg text-xs px-3 py-2 text-slate-200 placeholder-slate-500 focus:outline-none focus:border-[#00ff87] transition h-9">
+                        class="w-full bg-slate-950 border border-slate-800 rounded-lg text-xs px-3 py-2 text-slate-200 placeholder-slate-500 focus:outline-none focus:border-[#ff1e56] transition h-9">
                 </div>
 
                 <select id="group-select" onchange="changeGroup()"
-                    class="w-full bg-slate-950 border border-slate-800 rounded-lg text-xs font-semibold px-3 py-2 text-slate-200 focus:outline-none focus:border-[#00ff87] cursor-pointer h-9">
+                    class="w-full bg-slate-950 border border-slate-800 rounded-lg text-xs font-semibold px-3 py-2 text-slate-200 focus:outline-none focus:border-[#ff1e56] cursor-pointer h-9">
                     <option value="all">Todos os Grupos</option>
                     <option value="A">Grupo A</option>
                     <option value="B">Grupo B</option>
@@ -104,7 +104,7 @@
                 </select>
 
                 <select id="category-select" onchange="changeCategory()"
-                    class="w-full bg-slate-950 border border-slate-800 rounded-lg text-xs font-semibold px-3 py-2 text-slate-200 focus:outline-none focus:border-[#00ff87] cursor-pointer h-9">
+                    class="w-full bg-slate-950 border border-slate-800 rounded-lg text-xs font-semibold px-3 py-2 text-slate-200 focus:outline-none focus:border-[#ff1e56] cursor-pointer h-9">
                     <option value="all">Todas as Seleções</option>
                     <option value="FWC">História da Copa (00 - FWC19)</option>
                     <optgroup label="Seleções Oficiais">
@@ -163,7 +163,7 @@
                 <div
                     class="bg-slate-950 p-1 rounded-lg border border-slate-800 flex gap-1 w-full justify-center h-9 items-center sm:col-span-2 md:col-span-1">
                     <button onclick="filterStickers('all', event)"
-                        class="filter-btn active bg-[#00ff87] text-slate-950 font-bold py-1 rounded-md text-[11px] uppercase cursor-pointer flex-1 h-full transition-colors">Todas</button>
+                        class="filter-btn active bg-[#ff1e56] text-slate-950 font-bold py-1 rounded-md text-[11px] uppercase cursor-pointer flex-1 h-full transition-colors">Todas</button>
                     <button onclick="filterStickers('missing', event)"
                         class="filter-btn text-slate-400 font-bold py-1 rounded-md text-[11px] uppercase cursor-pointer flex-1 h-full transition-colors">Faltam</button>
                     <button onclick="filterStickers('owned', event)"
@@ -177,7 +177,7 @@
 
     <main class="max-w-7xl mx-auto w-full px-4 my-6 flex-grow">
         <div id="admin-hint"
-            class="hidden bg-blue-950/40 border border-blue-500 text-blue-300 px-4 py-3 rounded-xl text-xs font-semibold mb-4 text-center">
+            class="hidden bg-red-950/20 border border-red-500 text-red-300 px-4 py-3 rounded-xl text-xs font-semibold mb-4 text-center">
             💡 <strong>Modo Administrator Ativado:</strong> Clique no card para marcar/desmarcar posse. Use os botões
             internos de <span class="text-amber-400 font-bold">[-] [+]</span> para gerenciar as figurinhas repetidas de
             troca.
@@ -189,17 +189,17 @@
 
         <div class="flex justify-center items-center gap-2 mt-8">
             <button id="btn-first" onclick="navigatePage('first')"
-                class="p-2 rounded bg-slate-900 border border-slate-800 hover:border-[#00ff87] text-xs font-bold disabled:opacity-30 cursor-pointer">&lt;&lt;</button>
+                class="p-2 rounded bg-slate-900 border border-slate-800 hover:border-[#ff1e56] text-xs font-bold disabled:opacity-30 cursor-pointer">&lt;&lt;</button>
             <button id="btn-prev" onclick="navigatePage('prev')"
-                class="p-2 rounded bg-slate-900 border border-slate-800 hover:border-[#00ff87] text-xs font-bold disabled:opacity-30 cursor-pointer">&lt;</button>
+                class="p-2 rounded bg-slate-900 border border-slate-800 hover:border-[#ff1e56] text-xs font-bold disabled:opacity-30 cursor-pointer">&lt;</button>
             <span class="text-xs font-mono text-slate-400 px-4 bg-slate-950 py-2 rounded border border-slate-900">
-                Página <span id="current-page-num" class="text-[#00ff87] font-bold">1</span> de <span
+                Página <span id="current-page-num" class="text-[#ff1e56] font-bold">1</span> de <span
                     id="total-pages-num">1</span>
             </span>
             <button id="btn-next" onclick="navigatePage('next')"
-                class="p-2 rounded bg-slate-900 border border-slate-800 hover:border-[#00ff87] text-xs font-bold disabled:opacity-30 cursor-pointer">&gt;</button>
+                class="p-2 rounded bg-slate-900 border border-slate-800 hover:border-[#ff1e56] text-xs font-bold disabled:opacity-30 cursor-pointer">&gt;</button>
             <button id="btn-last" onclick="navigatePage('last')"
-                class="p-2 rounded bg-slate-900 border border-slate-800 hover:border-[#00ff87] text-xs font-bold disabled:opacity-30 cursor-pointer">&gt;&gt;</button>
+                class="p-2 rounded bg-slate-900 border border-slate-800 hover:border-[#ff1e56] text-xs font-bold disabled:opacity-30 cursor-pointer">&gt;&gt;</button>
         </div>
     </main>
 
@@ -212,7 +212,7 @@
         <div
             class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-sm overflow-hidden shadow-2xl transform scale-95 transition-transform duration-300">
             <div
-                class="bg-gradient-to-r from-[#00ff87] to-[#ff007f] p-4 flex justify-between items-center text-slate-950">
+                class="bg-gradient-to-r from-[#ff1e56] to-[#80001c] p-4 flex justify-between items-center text-white">
                 <h3 class="font-copa text-sm uppercase tracking-tight">Painel do Proprietário</h3>
                 <button onclick="closeModal('login-modal')"
                     class="font-bold text-xl hover:text-white cursor-pointer">&times;</button>
@@ -221,19 +221,19 @@
                 <div>
                     <label class="block text-xs font-bold text-slate-400 uppercase mb-1">Usuário</label>
                     <input type="text" id="username" required placeholder="admin"
-                        class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#00ff87]">
+                        class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#ff1e56]">
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-slate-400 uppercase mb-1">Senha</label>
                     <input type="password" id="password" required placeholder="copa2026"
-                        class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#00ff87]">
+                        class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#ff1e56]">
                 </div>
                 <div id="login-error"
                     class="hidden text-xs text-red-400 font-semibold bg-red-950/50 p-2 rounded-lg border border-red-900">
                     ❌ Usuário ou senha incorretos!
                 </div>
                 <button type="submit"
-                    class="w-full bg-[#00ff87] text-slate-950 font-bold py-3 rounded-xl text-xs uppercase tracking-wider hover:brightness-110 transition cursor-pointer">
+                    class="w-full bg-[#ff1e56] text-white font-bold py-3 rounded-xl text-xs uppercase tracking-wider hover:brightness-110 transition cursor-pointer">
                     Liberar Edição
                 </button>
             </form>

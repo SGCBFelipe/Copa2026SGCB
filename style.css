@@ -1,16 +1,16 @@
 /* Configurações Globais de Tipografia */
 body {
     font-family: 'Plus Jakarta Sans', sans-serif;
-    background-color: #050811;
+    background-color: #05050b;
 }
 
 .font-copa {
     font-family: 'Archivo Black', sans-serif;
 }
 
-/* Fix definitivo do Degradê do Título para evitar blocos sólidos */
-.copa-gradient-green-pink {
-    background: linear-gradient(135deg, #00ff87 0%, #ff007f 100%);
+/* Degradê do Título em Tons de Vermelho Geek */
+.copa-gradient-red {
+    background: linear-gradient(135deg, #ff1e56 0%, #80001c 100%);
     -webkit-background-clip: text;
     -moz-background-clip: text;
     background-clip: text;
@@ -21,12 +21,12 @@ body {
     display: inline-block;
 }
 
-/* Fundo Geométrico da Identidade Visual Copa 2026 */
+/* Fundo Geométrico com Brilho Radial Vermelho Cyberpunk */
 .bg-pattern {
-    background-color: #050811;
+    background-color: #05050b;
     background-image:
-        radial-gradient(circle at 10% 20%, rgba(0, 255, 135, 0.12) 0%, transparent 50%),
-        radial-gradient(circle at 90% 80%, rgba(255, 0, 127, 0.12) 0%, transparent 50%);
+        radial-gradient(circle at 10% 20%, rgba(255, 30, 86, 0.12) 0%, transparent 50%),
+        radial-gradient(circle at 90% 80%, rgba(128, 0, 28, 0.12) 0%, transparent 50%);
 }
 
 /* Estado de Alta Densidade dos Cards de Figurinhas */
@@ -35,24 +35,25 @@ body {
 }
 
 .sticker-missing {
-    background: rgba(30, 41, 59, 0.3) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: rgba(255, 255, 255, 0.4);
+    background: rgba(30, 41, 59, 0.2) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.35);
 }
 
 .sticker-missing .sticker-avatar {
-    opacity: 0.15;
+    opacity: 0.12;
     filter: grayscale(100%);
 }
 
+/* Borda e Brilho Neon em Vermelho para Figurinhas Possuídas */
 .sticker-owned {
-    border: 2px solid #00ff87;
-    box-shadow: 0 0 15px rgba(0, 255, 135, 0.2);
+    border: 2px solid #ff1e56;
+    box-shadow: 0 0 15px rgba(255, 30, 86, 0.25);
     color: #ffffff;
 }
 
 /* Efeito Cromado/Brilhante para as Figurinhas Especiais e Escudos */
 .sticker-special {
     border: 2px solid #ffd700 !important;
-    box-shadow: 0 0 15px rgba(255, 215, 0, 0.3) !important;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.25) !important;
 }
