@@ -1,3 +1,8 @@
+// --- CONFIGURAÇÕES DE DATAS PARA OS CONTADORES ---
+// Você pode alterar as datas e horas entre as aspas usando o formato "Mês Dia, Ano HH:MM:SS"
+const WORLD_CUP_DATE = new Date("June 11, 2026 00:00:00").getTime();
+const CAMPAIGN_END_DATE = new Date("August 01, 2026 23:59:59").getTime(); 
+
 const TOTAL_STICKERS = 994; // 20 FWC + (48 Seleções * 20) + 14 Coca-Cola
 const ITEMS_PER_PAGE = 48;
 
@@ -120,8 +125,48 @@ window.addEventListener('DOMContentLoaded', () => {
     generateStickersDatabase();
     initLocalStorageState();
     checkLoginState();
+    initCountdowns(); 
     renderAlbum();
 });
+
+// --- LÓGICA DOS CONTADORES ---
+function initCountdowns() {
+    updateCountdowns(); 
+    setInterval(updateCountdowns, 1000); 
+}
+
+function updateCountdowns() {
+    const now = new Date().getTime();
+
+    // Calcula tempo para a Copa
+    const wcDistance = WORLD_CUP_DATE - now;
+    renderTimer('wc', wcDistance);
+
+    // Calcula tempo para o fim da Campanha
+    const campDistance = CAMPAIGN_END_DATE - now;
+    renderTimer('camp', campDistance);
+}
+
+function renderTimer(prefix, distance) {
+    if (distance < 0) {
+        document.getElementById(`${prefix}-days`).innerText = "00";
+        document.getElementById(`${prefix}-hours`).innerText = "00";
+        document.getElementById(`${prefix}-mins`).innerText = "00";
+        document.getElementById(`${prefix}-secs`).innerText = "00";
+        return;
+    }
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    document.getElementById(`${prefix}-days`).innerText = String(days).padStart(2, '0');
+    document.getElementById(`${prefix}-hours`).innerText = String(hours).padStart(2, '0');
+    document.getElementById(`${prefix}-mins`).innerText = String(minutes).padStart(2, '0');
+    document.getElementById(`${prefix}-secs`).innerText = String(seconds).padStart(2, '0');
+}
+// -----------------------------
 
 function initLocalStorageState() {
     const savedStickers = localStorage.getItem('copa2026_album_stickers_994');
@@ -357,6 +402,10 @@ function checkLoginState() {
     if (sessionStorage.getItem('copa2026_logged_in') === 'true') {
         isAdmin = true;
         document.getElementById('admin-badge').classList.remove('hidden');
+        
+        // NOVIDADE AQUI: Ocultamos ativamente o botão de Login
+        document.getElementById('login-trigger-btn').classList.add('hidden');
+        
         document.getElementById('admin-hint').classList.remove('hidden');
     }
 }
