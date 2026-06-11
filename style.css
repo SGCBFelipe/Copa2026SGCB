@@ -123,3 +123,23 @@ body {
     border: 1px solid rgba(245, 158, 11, 0.35) !important;
     box-shadow: 0 0 10px rgba(245, 158, 11, 0.15);
 }
+
+/* --- EFEITO DE CONFETES COPA 2026 --- */
+.confetti {
+    position: fixed;
+    top: -20px;
+    z-index: 100;
+    pointer-events: none;
+    border-radius: 3px;
+    animation: fall linear forwards;
+}
+
+@keyframes fall {
+    0% {
+        transform: translateY(0) rotate(0deg);
+    }
+
+    100% {
+        transform: translateY(105vh) rotate(720deg);
+    }
+}
