@@ -1,9 +1,11 @@
-// --- CONFIGURAÇÕES DE DATAS PARA OS CONTADORES ---
-// Você pode alterar as datas e horas entre as aspas usando o formato "Mês Dia, Ano HH:MM:SS"
-const WORLD_CUP_DATE = new Date("June 11, 2026 00:00:00").getTime();
-const CAMPAIGN_END_DATE = new Date("August 01, 2026 23:59:59").getTime(); 
+// --- CONFIGURAÇÃO DA API DO GOOGLE APPS SCRIPT ---
+const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwf1RDggPtYo-HPAr8xN60lWjZn45y1paO2xUmug29qBayyib9tpEoPw0XwrYRzPIkamg/exec";
 
-const TOTAL_STICKERS = 994; // 20 FWC + (48 Seleções * 20) + 14 Coca-Cola
+// --- CONFIGURAÇÕES DE DATAS PARA OS CONTADORES ---
+const WORLD_CUP_DATE = new Date("June 11, 2026 16:00:00").getTime();
+const CAMPAIGN_END_DATE = new Date("August 01, 2026 23:59:59").getTime();
+
+const TOTAL_STICKERS = 994;
 const ITEMS_PER_PAGE = 48;
 
 let stickersList = [];
@@ -11,9 +13,7 @@ let stickersState = {};
 let stickersRepeatedState = {};
 let currentFilter = 'all';
 let currentPage = 1;
-let isAdmin = false;
 
-// Mapeamento sequencial exato com a injeção oficial dos Grupos (A até L) extraídos do PDF
 const SECTIONS_DATA = [
     { id: "FWC", name: "História da Copa", count: 20, prefix: "FWC", group: "especial" },
     { id: "MEX", name: "México", count: 20, prefix: "MEX", group: "A" },
@@ -76,6 +76,9 @@ function generateStickersDatabase() {
             let code = "";
             let name = "";
             let isSpecial = false;
+
+            // LÓGICA DA SUÍÇA APLICADA A TODOS: 
+            // Todas as figurinhas agora usam estritamente o mesmo degradê sólido e limpo!
             let bgGradient = "from-slate-900 to-slate-950";
 
             if (sec.id === "FWC") {
@@ -87,12 +90,10 @@ function generateStickersDatabase() {
                     code = `FWC${j - 1}`;
                     name = `História da Copa #${j - 1}`;
                 }
-                bgGradient = "from-red-950/40 to-slate-950";
             } else if (sec.id === "CC") {
                 code = `CC${j}`;
                 name = `Coca-Cola Especial #${j}`;
                 isSpecial = true;
-                bgGradient = "from-red-900 to-slate-950";
             } else {
                 code = `${sec.prefix}${j}`;
                 if (j === 1) {
@@ -101,10 +102,6 @@ function generateStickersDatabase() {
                 } else {
                     name = `${sec.name} - Jogador nº ${j}`;
                 }
-
-                if (sec.id === "BRA") bgGradient = "from-yellow-950/40 to-slate-950";
-                else if (sec.id === "ARG") bgGradient = "from-sky-950/40 to-slate-950";
-                else if (["MEX", "USA", "CAN"].includes(sec.id)) bgGradient = "from-red-950/30 to-slate-950";
             }
 
             stickersList.push({
@@ -121,28 +118,56 @@ function generateStickersDatabase() {
     });
 }
 
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', async () => {
     generateStickersDatabase();
-    initLocalStorageState();
-    checkLoginState();
-    initCountdowns(); 
-    renderAlbum();
+    initCountdowns();
+    await loadDatabaseFromSheets();
 });
+
+// --- LEITURA REAL-TIME DO GOOGLE SHEETS ---
+async function loadDatabaseFromSheets() {
+    stickersList.forEach(s => {
+        stickersState[s.id] = false;
+        stickersRepeatedState[s.id] = 0;
+    });
+
+    if (!GOOGLE_APPS_SCRIPT_URL || GOOGLE_APPS_SCRIPT_URL.includes("exec") === false) {
+        console.warn("Aviso: URL do Apps Script não configurada ou inválida.");
+        updateDashboard();
+        renderAlbum();
+        return;
+    }
+
+    try {
+        const response = await fetch(GOOGLE_APPS_SCRIPT_URL);
+        const data = await response.json();
+
+        data.forEach(item => {
+            const matched = stickersList.find(s => s.code.toUpperCase() === item.code.toUpperCase());
+            if (matched) {
+                stickersState[matched.id] = item.owned;
+                stickersRepeatedState[matched.id] = item.repeated;
+            }
+        });
+    } catch (error) {
+        console.error("Erro ao carregar dados do Google Sheets:", error);
+    }
+
+    updateDashboard();
+    renderAlbum();
+}
 
 // --- LÓGICA DOS CONTADORES ---
 function initCountdowns() {
-    updateCountdowns(); 
-    setInterval(updateCountdowns, 1000); 
+    updateCountdowns();
+    setInterval(updateCountdowns, 1000);
 }
 
 function updateCountdowns() {
     const now = new Date().getTime();
-
-    // Calcula tempo para a Copa
     const wcDistance = WORLD_CUP_DATE - now;
     renderTimer('wc', wcDistance);
 
-    // Calcula tempo para o fim da Campanha
     const campDistance = CAMPAIGN_END_DATE - now;
     renderTimer('camp', campDistance);
 }
@@ -166,50 +191,20 @@ function renderTimer(prefix, distance) {
     document.getElementById(`${prefix}-mins`).innerText = String(minutes).padStart(2, '0');
     document.getElementById(`${prefix}-secs`).innerText = String(seconds).padStart(2, '0');
 }
-// -----------------------------
-
-function initLocalStorageState() {
-    const savedStickers = localStorage.getItem('copa2026_album_stickers_994');
-    const savedRepeated = localStorage.getItem('copa2026_album_repeated_994');
-
-    if (savedStickers && savedRepeated) {
-        stickersState = JSON.parse(savedStickers);
-        stickersRepeatedState = JSON.parse(savedRepeated);
-    } else {
-        stickersState = {};
-        stickersRepeatedState = {};
-        stickersList.forEach(s => {
-            stickersState[s.id] = false;
-            stickersRepeatedState[s.id] = 0;
-        });
-
-        // Mocks iniciais de demonstração
-        stickersState[1] = true;
-        stickersState[21] = true;
-        stickersState[161] = true; stickersRepeatedState[161] = 2;
-        saveState();
-    }
-    updateDashboard();
-}
-
-function saveState() {
-    localStorage.setItem('copa2026_album_stickers_994', JSON.stringify(stickersState));
-    localStorage.setItem('copa2026_album_repeated_994', JSON.stringify(stickersRepeatedState));
-    updateDashboard();
-}
 
 function updateDashboard() {
     const total = TOTAL_STICKERS;
     const owned = Object.values(stickersState).filter(v => v === true).length;
     const repeated = Object.values(stickersRepeatedState).reduce((acc, curr) => acc + (curr || 0), 0);
-    const pct = Math.round((owned / total) * 100);
+    const pct = Math.round((owned / total) * 100) || 0;
 
-    document.getElementById('stats-owned').innerText = owned;
-    document.getElementById('stats-repeated').innerText = repeated;
-    document.getElementById('progress-percentage').innerText = `${pct}%`;
-    document.getElementById('progress-bar').style.width = `${pct}%`;
+    if (document.getElementById('stats-owned')) document.getElementById('stats-owned').innerText = owned;
+    if (document.getElementById('stats-repeated')) document.getElementById('stats-repeated').innerText = repeated;
+    if (document.getElementById('progress-percentage')) document.getElementById('progress-percentage').innerText = `${pct}%`;
+    if (document.getElementById('progress-bar')) document.getElementById('progress-bar').style.width = `${pct}%`;
 }
 
+// --- PESQUISA E FILTROS ---
 function handleSearch() {
     currentPage = 1;
     renderAlbum();
@@ -284,24 +279,14 @@ function renderAlbum() {
         const repCount = stickersRepeatedState[sticker.id] || 0;
         const card = document.createElement('div');
 
-        card.className = `sticker-card relative rounded-lg p-2 flex flex-col justify-between aspect-[3/4] text-center select-none bg-gradient-to-br ${sticker.bg} ${isOwned ? 'sticker-owned' : 'sticker-missing'} ${sticker.special ? 'sticker-special' : ''} ${isAdmin ? 'cursor-pointer scale-100 hover:scale-105 z-10 border-red-500' : ''}`;
+        // CORREÇÃO AQUI: Aplica 'sticker-special' no bloco apenas se ela NÃO for obtida
+        const specialClass = (sticker.special && !isOwned) ? 'sticker-special' : '';
 
-        if (isAdmin) {
-            card.onclick = () => toggleSticker(sticker.id);
-        }
+        card.className = `sticker-card relative rounded-lg p-2 flex flex-col justify-between aspect-[3/4] text-center select-none bg-gradient-to-br ${sticker.bg} ${isOwned ? 'sticker-owned' : 'sticker-missing'} ${specialClass}`;
 
         let repeatedHTML = '';
         if (isOwned) {
-            if (isAdmin) {
-                repeatedHTML = `
-                    <div class="text-[8px] font-bold text-[#ff1e56] mt-1">✓ OBTIDO</div>
-                    <div onclick="event.stopPropagation();" class="flex items-center justify-between bg-black/50 border border-slate-800 rounded p-0.5 mt-0.5 text-[10px]">
-                        <button onclick="changeRepeated(${sticker.id}, -1)" class="px-1.5 bg-slate-800 hover:bg-slate-700 active:bg-slate-600 text-white font-bold rounded cursor-pointer transition text-[9px]">-</button>
-                        <span class="font-bold text-amber-400 font-mono">${repCount} rep</span>
-                        <button onclick="changeRepeated(${sticker.id}, 1)" class="px-1.5 bg-slate-800 hover:bg-slate-700 active:bg-slate-600 text-white font-bold rounded cursor-pointer transition text-[9px]">+</button>
-                    </div>
-                `;
-            } else if (repCount > 0) {
+            if (repCount > 0) {
                 repeatedHTML = `
                     <div class="text-[8px] font-bold text-[#ff1e56] mt-1">✓ OBTIDO</div>
                     <div class="bg-amber-500/10 border border-amber-500/30 text-amber-400 font-extrabold rounded py-0.5 mt-0.5 text-[9px] font-mono tracking-wide">
@@ -329,25 +314,6 @@ function renderAlbum() {
         `;
         grid.appendChild(card);
     });
-}
-
-function toggleSticker(id) {
-    if (!isAdmin) return;
-    stickersState[id] = !stickersState[id];
-    if (!stickersState[id]) {
-        stickersRepeatedState[id] = 0;
-    }
-    saveState();
-    renderAlbum();
-}
-
-function changeRepeated(id, amount) {
-    if (!isAdmin) return;
-    if (stickersRepeatedState[id] === undefined) stickersRepeatedState[id] = 0;
-    stickersRepeatedState[id] += amount;
-    if (stickersRepeatedState[id] < 0) stickersRepeatedState[id] = 0;
-    saveState();
-    renderAlbum();
 }
 
 function filterStickers(filter, event) {
@@ -398,23 +364,6 @@ function navigatePage(direction) {
     renderAlbum();
 }
 
-function checkLoginState() {
-    if (sessionStorage.getItem('copa2026_logged_in') === 'true') {
-        isAdmin = true;
-        document.getElementById('admin-badge').classList.remove('hidden');
-        
-        // NOVIDADE AQUI: Ocultamos ativamente o botão de Login
-        document.getElementById('login-trigger-btn').classList.add('hidden');
-        
-        document.getElementById('admin-hint').classList.remove('hidden');
-    }
-}
-
-function logout() {
-    sessionStorage.removeItem('copa2026_logged_in');
-    location.reload();
-}
-
 function openModal(id) {
     const modal = document.getElementById(id);
     modal.classList.remove('hidden');
@@ -427,12 +376,25 @@ function closeModal(id) {
     setTimeout(() => modal.classList.add('hidden'), 300);
 }
 
-function handleLogin(event) {
-    event.preventDefault();
-    if (document.getElementById('username').value === 'admin' && document.getElementById('password').value === 'copa2026') {
-        sessionStorage.setItem('copa2026_logged_in', 'true');
-        location.reload();
-    } else {
-        document.getElementById('login-error').classList.remove('hidden');
-    }
-}
+// ==========================================
+// EFEITO PISCANTE DO FAVICON (SINAL ONLINE)
+// ==========================================
+(function () {
+    const favicon = document.getElementById('favicon');
+    if (!favicon) return;
+
+    // Estado 1: Bolinha Vermelha Neon (Acesa)
+    const iconOn = "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%23ff1e56'/></svg>";
+
+    // Estado 2: Bolinha Transparente (Apagada)
+    const iconOff = "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='transparent'/></svg>";
+
+    // Variável de controle: começa como true (aceso)
+    let bolarAcesa = true;
+
+    // Alterna o estado a cada 1000ms (1 segundo)
+    setInterval(() => {
+        bolarAcesa = !bolarAcesa; // Inverte o estado (se está aceso, apaga; se está apagado, acende)
+        favicon.setAttribute('href', bolarAcesa ? iconOn : iconOff);
+    }, 1000);
+})();

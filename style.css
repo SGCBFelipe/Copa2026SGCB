@@ -16,7 +16,6 @@ body {
     -moz-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    -white-text-fill-color: transparent;
     color: transparent;
     display: inline-block;
 }
@@ -41,10 +40,12 @@ body {
         transform: translate(0, 0) scale(1);
         opacity: 0.5;
     }
+
     50% {
         transform: translate(6vw, 4vh) scale(1.25);
         opacity: 0.9;
     }
+
     100% {
         transform: translate(-3vw, 10vh) scale(0.95);
         opacity: 0.4;
@@ -56,10 +57,12 @@ body {
         transform: translate(0, 0) scale(1);
         opacity: 0.6;
     }
+
     50% {
         transform: translate(-8vw, -6vh) scale(0.85);
         opacity: 0.3;
     }
+
     100% {
         transform: translate(4vw, -3vh) scale(1.2);
         opacity: 0.95;
@@ -83,9 +86,11 @@ body {
     0% {
         transform: translate(0, 0) scale(1);
     }
+
     50% {
         transform: translate(40px, 25px) scale(1.02);
     }
+
     100% {
         transform: translate(-20px, 40px) scale(1);
     }
@@ -113,7 +118,8 @@ body {
     color: #ffffff;
 }
 
-.sticker-special {
+/* CORRIGIDO: O contorno dourado agora só se aplica ao bloco quando ele estiver FALTANDO (transparentes) */
+.sticker-missing.sticker-special {
     border: 1px solid rgba(245, 158, 11, 0.35) !important;
     box-shadow: 0 0 10px rgba(245, 158, 11, 0.15);
 }
