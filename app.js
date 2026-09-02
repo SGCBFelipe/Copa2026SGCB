@@ -1,9 +1,10 @@
 // --- CONFIGURAÇÃO DA API DO GOOGLE APPS SCRIPT ---
 const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwf1RDggPtYo-HPAr8xN60lWjZn45y1paO2xUmug29qBayyib9tpEoPw0XwrYRzPIkamg/exec";
 
-// --- CONFIGURAÇÕES DE DATAS PARA OS CONTADORES ---
-const WORLD_CUP_DATE = new Date("June 11, 2026 16:00:00").getTime();
-const CAMPAIGN_END_DATE = new Date("August 01, 2026 23:59:59").getTime();
+// --- CONFIGURAÇÃO DA DATA FINAL (HOJE ÁS 16:00:00) ---
+const todayAt16 = new Date();
+todayAt16.setHours(16, 0, 0, 0);
+const CAMPAIGN_END_DATE = todayAt16.getTime();
 
 const TOTAL_STICKERS = 994;
 const ITEMS_PER_PAGE = 48;
@@ -14,8 +15,7 @@ let stickersRepeatedState = {};
 let currentFilter = 'all';
 let currentPage = 1;
 
-let confettiInterval = null;     // Controle do loop de confetes
-let isAutoConfettiActive = false; // Garante que o efeito automático ligue/desligue apenas uma vez
+let confettiInterval = null;
 
 const SECTIONS_DATA = [
     { id: "FWC", name: "História da Copa", count: 20, prefix: "FWC", group: "especial" },
@@ -46,7 +46,7 @@ const SECTIONS_DATA = [
     { id: "BEL", name: "Bélgica", count: 20, prefix: "BEL", group: "G" },
     { id: "EGY", name: "Egito", count: 20, prefix: "EGY", group: "G" },
     { id: "IRN", name: "Irã", count: 20, prefix: "IRN", group: "G" },
-    { id: "NZL", name: "Nova Zelândia", transition: "NZL", group: "G" },
+    { id: "NZL", name: "Nova Zelândia", count: 20, prefix: "NZL", group: "G" },
     { id: "ESP", name: "Espanha", count: 20, prefix: "ESP", group: "H" },
     { id: "CPV", name: "Cabo Verde", count: 20, prefix: "CPV", group: "H" },
     { id: "KSA", name: "Arábia Saudita", count: 20, prefix: "KSA", group: "H" },
@@ -121,17 +121,8 @@ function generateStickersDatabase() {
 window.addEventListener('DOMContentLoaded', async () => {
     generateStickersDatabase();
     initCountdowns();
+    startConfetti(); // Ativa a chuva de confetes permanente no carregamento
     await loadDatabaseFromSheets();
-});
-
-// --- ATALHO DE TECLADO PARA A PRÉVIA ---
-window.addEventListener('keydown', (event) => {
-    if (document.activeElement === document.getElementById('search-input')) {
-        return;
-    }
-    if (event.key === 'p' || event.key === 'P') {
-        previewConfetti();
-    }
 });
 
 // --- LEITURA REAL-TIME DO GOOGLE SHEETS ---
@@ -167,7 +158,7 @@ async function loadDatabaseFromSheets() {
     renderAlbum();
 }
 
-// --- LÓGICA DOS CONTADORES ---
+// --- LÓGICA DO CONTADOR ---
 function initCountdowns() {
     updateCountdowns();
     setInterval(updateCountdowns, 1000);
@@ -175,29 +166,14 @@ function initCountdowns() {
 
 function updateCountdowns() {
     const now = new Date().getTime();
-    const wcDistance = WORLD_CUP_DATE - now;
-    const ONE_DAY_MS = 24 * 60 * 60 * 1000;
-
-    // Controle inteligente do efeito contínuo de 24 horas
-    if (wcDistance <= 0 && wcDistance > -ONE_DAY_MS) {
-        if (!isAutoConfettiActive) {
-            isAutoConfettiActive = true;
-            startConfetti();
-        }
-    } else {
-        if (isAutoConfettiActive) {
-            isAutoConfettiActive = false;
-            stopConfetti(); // Desliga exatamente ao acabar as 24h festivas
-        }
-    }
-
-    renderTimer('wc', wcDistance);
-
     const campDistance = CAMPAIGN_END_DATE - now;
     renderTimer('camp', campDistance);
 }
 
 function renderTimer(prefix, distance) {
+    const daysEl = document.getElementById(`${prefix}-days`);
+    if (!daysEl) return;
+
     if (distance < 0) {
         document.getElementById(`${prefix}-days`).innerText = "00";
         document.getElementById(`${prefix}-hours`).innerText = "00";
@@ -217,7 +193,7 @@ function renderTimer(prefix, distance) {
     document.getElementById(`${prefix}-secs`).innerText = String(seconds).padStart(2, '0');
 }
 
-// --- SISTEMA DA CHUVA DE CONFETES ---
+// --- SISTEMA DA CHUVA DE CONFETES CONTINUA ---
 function startConfetti() {
     if (confettiInterval) return;
 
@@ -243,34 +219,6 @@ function startConfetti() {
             confetti.remove();
         }, duration * 1000);
     }, 150);
-}
-
-function stopConfetti() {
-    if (confettiInterval) {
-        clearInterval(confettiInterval);
-        confettiInterval = null;
-    }
-}
-
-// --- DISPARADOR DE PRÉVIA (TECLA P) ---
-function previewConfetti() {
-    const now = new Date().getTime();
-    const wcDistance = WORLD_CUP_DATE - now;
-    const ONE_DAY_MS = 24 * 60 * 60 * 1000;
-
-    // TRAVA: Se estiver dentro do período automático de 24h, a prévia não faz nada
-    if (wcDistance <= 0 && wcDistance > -ONE_DAY_MS) {
-        return;
-    }
-
-    const alreadyRunning = !!confettiInterval;
-    startConfetti();
-
-    if (!alreadyRunning) {
-        setTimeout(() => {
-            stopConfetti();
-        }, 5000);
-    }
 }
 
 function updateDashboard() {
