@@ -21,6 +21,7 @@
 
 <body class="text-slate-100 min-h-screen flex flex-col justify-between relative bg-[#05050b]">
 
+    <!-- GLOW DE FUNDO -->
     <div class="fixed inset-0 -z-20 overflow-hidden pointer-events-none">
         <div
             class="absolute top-[-15vw] left-[-15vw] w-[50vw] h-[50vw] rounded-full filter blur-[130px] ambient-glow-1">
@@ -30,6 +31,7 @@
         </div>
     </div>
 
+    <!-- PATTERN SVG DE FUNDO -->
     <svg class="fixed inset-0 -z-10 w-full h-full pointer-events-none opacity-[0.02] invert select-none"
         xmlns="http://www.w3.org/2000/svg">
         <defs>
@@ -46,6 +48,7 @@
         <rect width="100%" height="100%" fill="url(#logo2026-pattern)" />
     </svg>
 
+    <!-- CABEÇALHO DA PÁGINA -->
     <header class="bg-slate-950/60 border-b border-slate-900 px-4 py-6 md:py-8 backdrop-blur-md">
         <div class="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
 
@@ -73,6 +76,10 @@
                         class="flex-1 flex justify-center items-center bg-slate-900 border border-slate-800 rounded-xl text-[10px] md:text-xs font-bold tracking-wider text-[#ff1e56] uppercase whitespace-nowrap h-9 px-2">
                         <span class="w-2 h-2 rounded-full bg-[#ff1e56] animate-ping mr-2"></span> online
                     </div>
+                    <button onclick="openModal('agradecimentos-modal')"
+                        class="flex-1 bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-amber-500 text-slate-300 hover:text-white font-bold rounded-xl transition text-[10px] md:text-xs cursor-pointer whitespace-nowrap h-9 flex items-center justify-center px-2">
+                        🙌 Agradecimentos
+                    </button>
                     <button onclick="openModal('regras-modal')"
                         class="flex-1 bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-[#ff1e56] text-slate-300 hover:text-white font-bold rounded-xl transition text-[10px] md:text-xs cursor-pointer whitespace-nowrap h-9 flex items-center justify-center px-2">
                         📜 Regras
@@ -152,14 +159,14 @@
                 <div class="relative z-10 flex flex-col items-center justify-center gap-2">
                     <span
                         class="bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[10px] md:text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest">
-                        🎉 GANHADOR(A) DO SORTEIO 🎉
+                        🎉 GANHADOR DO SORTEIO 🎉
                     </span>
                     <h2
                         class="text-2xl md:text-4xl font-copa text-white tracking-wide uppercase drop-shadow-[0_2px_10px_rgba(245,158,11,0.5)]">
-                        NOME DO ALUNO AQUI
+                        FELIPE BASSETO
                     </h2>
-                    <p class="text-xs md:text-sm text-slate-300 max-w-lg">
-                        Parabéns por completar essa jornada incrível e conquistar o grande prêmio do Nosso Álbum da
+                    <p class="text-xs md:text-sm text-slate-300 whitespace-nowrap">
+                        Parabéns por completar essa jornada incrível e conquistar o grande prêmio do nosso Álbum da
                         Copa! 🏆
                     </p>
                 </div>
@@ -273,10 +280,12 @@
         </div>
     </section>
 
+    <!-- GRID DAS FIGURINHAS -->
     <main class="max-w-7xl mx-auto w-full px-4 my-6 flex-grow">
         <div id="album-grid"
             class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-12 gap-2"></div>
 
+        <!-- CONTROLES DE PAGINAÇÃO -->
         <div class="flex justify-center items-center gap-2 mt-8">
             <button id="btn-first" onclick="navigatePage('first')"
                 class="p-2 rounded bg-slate-900 border border-slate-800 hover:border-[#ff1e56] text-xs font-bold disabled:opacity-30 cursor-pointer">&lt;&lt;</button>
@@ -293,10 +302,12 @@
         </div>
     </main>
 
+    <!-- RODAPÉ -->
     <footer class="bg-slate-950/80 border-t border-slate-900 py-4 text-center text-[11px] text-slate-600">
         <p>© 2026 - Álbum Digital Interativo Copa 2026 • SuperGeeks Campo Belo. Todos os direitos reservados.</p>
     </footer>
 
+    <!-- MODAL DE REGRAS -->
     <div id="regras-modal"
         class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300 p-4">
         <div
@@ -320,6 +331,37 @@
                 </ul>
                 <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 text-[11px] text-center text-slate-500">
                     Dúvidas sobre o projeto? Procure a coordenação ou a secretaria da Unidade Campo Belo.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE AGRADECIMENTOS -->
+    <div id="agradecimentos-modal"
+        class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300 p-4">
+        <div
+            class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-2xl overflow-hidden shadow-2xl transform scale-95 transition-transform duration-300">
+            <div class="bg-gradient-to-r from-amber-500 to-[#ff1e56] p-4 flex justify-between items-center text-white">
+                <h3 class="font-copa text-sm uppercase tracking-tight flex items-center gap-2">
+                    <span>🙌</span> Agradecimentos Especiais
+                </h3>
+                <button onclick="closeModal('agradecimentos-modal')"
+                    class="font-bold text-xl hover:text-white cursor-pointer">&times;</button>
+            </div>
+            <div class="p-6 space-y-4 max-h-[70vh] overflow-y-auto text-slate-300 text-xs md:text-sm">
+                <p class="text-center text-slate-400">
+                    Nosso sincero agradecimento a todos os alunos que participaram doando, trocando figurinhas e
+                    tornando o álbum completo um sucesso! ⚽
+                </p>
+
+                <!-- GRID DINÂMICO DE ALUNOS -->
+                <div id="alunos-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 pt-2">
+                    <!-- Os nomes dos alunos são injetados automaticamente aqui via app.js -->
+                </div>
+
+                <div
+                    class="bg-amber-500/10 border border-amber-500/20 p-3 rounded-xl text-center text-[11px] text-amber-300 mt-4">
+                    Vocês deram um show de cooperação e trabalho em equipe! 🏆
                 </div>
             </div>
         </div>

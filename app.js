@@ -1,6 +1,31 @@
 // --- CONFIGURAÇÃO DA API DO GOOGLE APPS SCRIPT ---
 const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwf1RDggPtYo-HPAr8xN60lWjZn45y1paO2xUmug29qBayyib9tpEoPw0XwrYRzPIkamg/exec";
 
+// --- LISTA DE ALUNOS PARTICIPANTES (ADICIONE OU REMOVA AQUI) ---
+const ALUNOS_PARTICIPANTES = [
+    "Daniel Lorenzo",
+    "Eduardo Simões Santana",
+    "Felipe Basseto",
+    "Felipe Nunes",
+    "Felipe Ribeiro Carlos",
+    "Guilherme Makoto Kanadani",
+    "Helena Mahler Duprat",
+    "José Pedro Arruda Do Regô Barros",
+    "Leonardo Medeiros Esberard Gomes",
+    "Leonardo Simões Santana",
+    "Lia Pereira Dia",
+    "Lorenzo Holanda Faias",
+    "Lucas Viana de Santana Magliano",
+    "Luis Felipe De Castro Fineza",
+    "Manuela Caminha Pereira Dos Santos Brasil",
+    "Mateus Kenzo Kanadani",
+    "Nickolas Cunningham Bauab",
+    "Pedro Rodrigues Anunziato",
+    "Pedro Simon Miranda",
+    "Rafael Akira de Souza Beppu",
+    "Vinicius Berto Burmeister"
+];
+
 // --- CONFIGURAÇÃO DA DATA FINAL (HOJE ÁS 16:00:00) ---
 const todayAt16 = new Date();
 todayAt16.setHours(16, 0, 0, 0);
@@ -118,10 +143,27 @@ function generateStickersDatabase() {
     });
 }
 
+// --- RENDERIZAR LISTA DE ALUNOS DINAMICAMENTE ---
+function renderAgradecimentos() {
+    const grid = document.getElementById('alunos-grid');
+    if (!grid) return;
+
+    const htmlAlunos = ALUNOS_PARTICIPANTES.map(aluno => {
+        return `
+            <div title="${aluno}" class="bg-slate-950/80 border border-slate-800 p-2.5 rounded-xl text-center text-slate-200 font-semibold text-xs truncate hover:border-amber-500/50 transition cursor-default">
+                ⚽ ${aluno}
+            </div>
+        `;
+    }).join('');
+
+    grid.innerHTML = htmlAlunos;
+}
+
 window.addEventListener('DOMContentLoaded', async () => {
     generateStickersDatabase();
     initCountdowns();
-    startConfetti(); // Ativa a chuva de confetes permanente no carregamento
+    startConfetti();
+    renderAgradecimentos(); // Insere os alunos na modal automaticamente
     await loadDatabaseFromSheets();
 });
 

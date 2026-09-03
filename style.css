@@ -1,140 +1,92 @@
-/* Configurações Globais de Tipografia e Base */
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
+
 body {
     font-family: 'Plus Jakarta Sans', sans-serif;
-    background-color: #05050b;
-    overflow-x: hidden;
 }
 
 .font-copa {
     font-family: 'Archivo Black', sans-serif;
 }
 
-/* Fix definitivo do Degradê do Título para evitar blocos sólidos */
 .copa-gradient-red {
     background: linear-gradient(135deg, #ff1e56 0%, #80001c 100%);
     -webkit-background-clip: text;
-    -moz-background-clip: text;
-    background-clip: text;
     -webkit-text-fill-color: transparent;
-    color: transparent;
-    display: inline-block;
 }
 
-/* --- SISTEMA DE PULSO DE ENERGIA GLOBAL (AURORAS NEON) --- */
+/* Ambient Background Glows */
 .ambient-glow-1 {
-    background: radial-gradient(circle, rgba(255, 30, 86, 0.35) 0%, transparent 75%);
-    mix-blend-mode: screen;
-    will-change: transform, opacity;
-    animation: globalEnergyPulse1 14s ease-in-out infinite alternate;
+    background: radial-gradient(circle, rgba(255, 30, 86, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
 }
 
 .ambient-glow-2 {
-    background: radial-gradient(circle, rgba(128, 0, 28, 0.45) 0%, transparent 75%);
-    mix-blend-mode: screen;
-    will-change: transform, opacity;
-    animation: globalEnergyPulse2 18s ease-in-out infinite alternate;
+    background: radial-gradient(circle, rgba(245, 158, 11, 0.1) 0%, rgba(0, 0, 0, 0) 70%);
 }
 
-@keyframes globalEnergyPulse1 {
-    0% {
-        transform: translate(0, 0) scale(1);
-        opacity: 0.5;
-    }
-
-    50% {
-        transform: translate(6vw, 4vh) scale(1.25);
-        opacity: 0.9;
-    }
-
-    100% {
-        transform: translate(-3vw, 10vh) scale(0.95);
-        opacity: 0.4;
-    }
-}
-
-@keyframes globalEnergyPulse2 {
-    0% {
-        transform: translate(0, 0) scale(1);
-        opacity: 0.6;
-    }
-
-    50% {
-        transform: translate(-8vw, -6vh) scale(0.85);
-        opacity: 0.3;
-    }
-
-    100% {
-        transform: translate(4vw, -3vh) scale(1.2);
-        opacity: 0.95;
-    }
-}
-
-/* --- ANIMAÇÃO FLUIDA DO PADRÃO DE LOGOS DA COPA --- */
-.bg-svg-animated {
-    position: fixed;
-    z-index: -10;
-    top: -100px;
-    left: -100px;
-    width: calc(100% + 200px);
-    height: calc(100% + 200px);
-    display: block;
-    will-change: transform;
-    animation: subtlePatternMotion 45s ease-in-out infinite alternate;
-}
-
-@keyframes subtlePatternMotion {
-    0% {
-        transform: translate(0, 0) scale(1);
-    }
-
-    50% {
-        transform: translate(40px, 25px) scale(1.02);
-    }
-
-    100% {
-        transform: translate(-20px, 40px) scale(1);
-    }
-}
-
-/* Estado de Alta Densidade dos Cards de Figurinhas */
+/* Sticker Cards Styling */
 .sticker-card {
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.2s ease-in-out;
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.sticker-missing {
-    background: rgba(30, 41, 59, 0.2) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    color: rgba(255, 255, 255, 0.35);
-}
-
-.sticker-missing .sticker-avatar {
-    opacity: 0.12;
-    filter: grayscale(100%);
+.sticker-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
 }
 
 .sticker-owned {
-    border: 2px solid #ff1e56;
-    box-shadow: 0 0 15px rgba(255, 30, 86, 0.25);
-    color: #ffffff;
+    border-color: rgba(255, 30, 86, 0.4);
+    box-shadow: 0 0 10px rgba(255, 30, 86, 0.15);
 }
 
-/* CORRIGIDO: O contorno dourado agora só se aplica ao bloco quando ele estiver FALTANDO (transparentes) */
-.sticker-missing.sticker-special {
-    border: 1px solid rgba(245, 158, 11, 0.35) !important;
-    box-shadow: 0 0 10px rgba(245, 158, 11, 0.15);
+.sticker-missing {
+    opacity: 0.6;
+    filter: grayscale(80%);
 }
 
-/* --- EFEITO DE CONFETES COPA 2026 --- */
+.sticker-missing:hover {
+    opacity: 0.9;
+    filter: grayscale(30%);
+}
+
+.sticker-special {
+    position: relative;
+    overflow: hidden;
+}
+
+.sticker-special::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(125deg, transparent 0%, rgba(245, 158, 11, 0.3) 50%, transparent 100%);
+    animation: shine 3s infinite;
+}
+
+@keyframes shine {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    20% {
+        transform: translateX(100%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+/* Confetti Styling */
 .confetti {
     position: fixed;
-    top: -20px;
-    z-index: 100;
+    top: -10px;
+    z-index: 9999;
     pointer-events: none;
-    border-radius: 3px;
-    animation: fall linear forwards;
+    border-radius: 2px;
+    animation: confettiFall linear forwards;
 }
 
-@keyframes fall {
+@keyframes confettiFall {
     0% {
         transform: translateY(0) rotate(0deg);
     }
@@ -144,14 +96,12 @@ body {
     }
 }
 
-/* --- EFEITO DE BRILHO CIRCULANDO A BORDA --- */
+/* Efeito de Borda Brilhante Rotativa */
 .glow-border-wrapper {
     position: relative;
     overflow: hidden;
     padding: 2px;
-    /* Espessura da borda brilhante */
     border-radius: 1rem;
-    /* Equivalente a rounded-2xl */
 }
 
 .glow-border-wrapper::before {
